@@ -5,7 +5,6 @@ import HighlightMarquee from '../components/HighlightMarquee';
 
 export const prerender = true;
 
-const posts = await getCollection('posts');
 ---
 
 <Layout title="Keystatic & Astro's Content Collections">
@@ -37,7 +36,10 @@ const posts = await getCollection('posts');
 		<img src="/d/temp_bld.png" alt="" class="main-building"> -->
 	</section>
 	<section id="welcome">
-		<img src="/g/main-logo.png" alt="Main Logo	" class="outside_main-logo">
+		<div class="logo-cont" data-depth="70" data-max="200"> 
+		<img src="/g/main-logo.png" alt="Main Logo	" class="outside_main-logo" >
+
+		</div>
 		<div class="heading">
 			<h2>Welcome to the Phantom Ball</h2>
 			<img src="/d/hr.png" alt="">
@@ -94,7 +96,7 @@ The Phantom Ball is a night for remembering </p>
 		fallbackContainer.hidden = useParallax;
 	}
 
-	const layers = [...document.querySelectorAll<HTMLElement>('#hero [data-depth]')];
+	const layers = [...document.querySelectorAll<HTMLElement>('[data-depth]')];
 	const intensity = 0.45;
 
 	// Options
@@ -278,17 +280,17 @@ The Phantom Ball is a night for remembering </p>
 		}
 		min-height: 800px;
 		.heading{
-			padding-top: 300px;
+			padding-top: 200px;
 			
 			
 		}
 	}
 	.outside_main-logo{
 		position: absolute;
-		top: -150px;
+		top: 50px;
 		left: 50%;
 		transform: translateX(-50%);
-		width: 800px;
+		width: 700px;
 
 		height: auto;
 	}
