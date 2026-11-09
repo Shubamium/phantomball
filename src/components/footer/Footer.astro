@@ -1,6 +1,10 @@
 ---
 import { Icon } from 'astro-icon/components'
 ---
+<div class="decofooter-container">
+	<img src="/d/hr_fancy.png" alt="" class="decofooter l">
+<img src="/d/hr_fancy.png" alt="" class="decofooter r">
+</div>
 <footer id="footer" class="footer">
 	<div class="container">
 		<div class="logo">
@@ -38,6 +42,30 @@ import { Icon } from 'astro-icon/components'
 </footer>
 
 <style lang="scss">
+	.decofooter-container{
+		position: relative;
+		width: 100%;
+		height: 80px;
+		user-select: none;
+		pointer-events: none;
+	}
+	.decofooter{
+		position: absolute;
+		top:-60px;
+		height: 80px;
+		object-fit: cover;
+		z-index: -10;
+
+		&.l{
+			left: -120px;
+			rotate: 35deg;
+		}
+		&.r{
+			right: -120px;
+			rotate: -35deg;
+			transform: scaleX(-1);
+		}
+	}
 	.footer {
 		background: linear-gradient(to bottom, #0B2642, #081420);
 		border-top: 10px solid #BC965C;
