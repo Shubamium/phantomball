@@ -1,0 +1,132 @@
+---
+const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
+---
+
+<header class="site-header">
+	<div class="header-inner">
+		<a class="logo-link" href="/" aria-label="Phantom Ball home">
+			<img src="/g/main-logo.png" alt="Phantom Ball">
+		</a>
+		<nav aria-label="Main navigation">
+			<a href="/" aria-current={currentPath === '/' ? 'page' : undefined}>Home</a>
+			<a href="/highlights" aria-current={currentPath === '/highlights' ? 'page' : undefined}>Year Highlights</a>
+			<a href="/rules" aria-current={currentPath === '/rules' ? 'page' : undefined}>Rules &amp; Committee</a>
+		</nav>
+	</div>
+</header>
+
+<style>
+	.site-header {
+		position: relative;
+		z-index: 2;
+		width: 100%;
+		background: #06101b;
+	}
+	.site-header::before{
+		position: absolute;
+		width: 500px;
+		height: 500px;
+		background:#050D15 ;
+		top: -250px;
+		right: -250px;
+		border-radius: 50%;
+		content: '';
+	}
+
+	.header-inner {
+		display: flex;
+		align-items: center;
+		gap: clamp(2rem, 5vw, 4rem);
+		width: min(90%, 1440px);
+		min-height: 120px;
+		margin: 0 auto;
+	}
+
+	.logo-link {
+		display: block;
+		flex: 0 0 auto;
+		width: clamp(120px, 16vw, 180px);
+	}
+
+	.logo-link img {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	nav {
+		display: flex;
+		align-items: center;
+		gap: clamp(1.5rem, 3vw, 2.5rem);
+	}
+
+	nav a {
+		position: relative;
+		padding: 0.6rem 0;
+		color: #c4c5c8;
+		font-size: clamp(1rem, 1.7vw, 1.35rem);
+		text-decoration: none;
+		white-space: nowrap;
+		transition: color 180ms ease;
+	}
+
+	nav a::before,
+	nav a::after {
+		position: absolute;
+		left: 50%;
+		height: 2px;
+		background: #bc965c;
+		content: "";
+		transform: translateX(-50%) scaleX(0);
+		transition: transform 180ms ease;
+	}
+
+	nav a::before {
+		bottom: 2px;
+		width: 100%;
+	}
+
+	nav a::after {
+		bottom: -4px;
+		width: 55%;
+	}
+
+	nav a:hover,
+	nav a:focus-visible,
+	nav a[aria-current="page"] {
+		color: #bc965c;
+	}
+
+	nav a:hover::before,
+	nav a:hover::after,
+	nav a:focus-visible::before,
+	nav a:focus-visible::after,
+	nav a[aria-current="page"]::before,
+	nav a[aria-current="page"]::after {
+		transform: translateX(-50%) scaleX(1);
+	}
+
+	@media (max-width: 600px) {
+		.header-inner {
+			min-height: auto;
+			padding: 1rem 0;
+			flex-wrap: wrap;
+			justify-content: center;
+			gap: 0.75rem 1.5rem;
+		}
+
+		.logo-link {
+			width: 130px;
+		}
+
+		nav {
+			justify-content: center;
+			flex-wrap: wrap;
+			gap: 0 1.25rem;
+		}
+
+		nav a {
+			font-size: 0.95rem;
+		}
+	}
+</style>

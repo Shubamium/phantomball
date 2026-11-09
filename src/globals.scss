@@ -1,0 +1,125 @@
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Manrope:wght@200..800&display=swap");
+
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 350ms;
+}
+
+::view-transition-old(root) {
+  animation-name: slide-out-left;
+}
+
+::view-transition-new(root) {
+  animation-name: slide-in-right;
+}
+
+@keyframes slide-out-left {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0s;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  padding: 0;
+  outline: none;
+  border: none;
+  background: none;
+  text-decoration: none;
+  color: black;
+}
+
+@keyframes speen {
+  from {
+    rotate: 0deg;
+  }
+  to {
+    rotate: 360deg;
+  }
+}
+.btn {
+  cursor: pointer;
+  transition: all 200ms ease;
+  &:hover {
+    scale: 1.05;
+  }
+  &:active {
+    scale: 0.95;
+  }
+}
+
+html {
+  overflow-x: clip;
+}
+body {
+  font-family: "Manrope", sans-serif;
+  font-size: 1.2rem;
+  // min-height: 4000px;
+  background: #06101b;
+  color: white;
+}
+
+.mainwheader {
+  min-height: 100vh;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Cinzel", serif;
+  margin: 1rem 0 1rem;
+}
+
+p,
+ul,
+ol {
+  margin-bottom: 1rem;
+  color: #1d1d1d;
+}
+
+img {
+  height: auto;
+  max-width: 100%;
+}
+
+.heading {
+  text-align: center;
+  filter: drop-shadow(0px 0px 9px #bc965c);
+  h2 {
+    font-size: 4rem;
+    color: white;
+  }
+  p {
+    margin: 0 auto;
+    margin-top: 1em;
+    margin-bottom: 2em;
+    text-align: center;
+    font-size: 1.5rem;
+    color: white;
+    max-width: 60ch;
+  }
+}

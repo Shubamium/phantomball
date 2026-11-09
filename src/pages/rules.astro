@@ -1,0 +1,308 @@
+---
+import HeaderLayout from '../layouts/HeaderLayout.astro';
+---
+
+<HeaderLayout title='Rules | Phantom Ball'>
+	<main id="p_rules">
+		<section class="rules-banner" aria-label="Phantom Ball ballroom"></section>
+		<section class="rules-content">
+			<div class="heading">
+				<h1>RULES</h1>
+				<img src="/d/hr.png" alt="">
+				<p>The Phantom Ball of Auld Lang Syne is a celebratory gathering of friends and mutuals who enjoy gaming and bringing communities together.</p>
+			</div>
+			<ul class="rule-list">
+				<li class="rule-card">
+					<h2>Rule name</h2>
+					<p>The Phantom Ball of Auld Lang Syne is a celebratory gathering of friends and mutuals who enjoy gaming and bringing communities together.</p>
+					<p>Be kind to one another and help make the event welcoming for everyone.</p>
+				</li>
+				<li class="rule-card">
+					<h2>Rule name</h2>
+					<p>The Phantom Ball of Auld Lang Syne is a celebratory gathering of friends and mutuals who enjoy gaming and bringing communities together.</p>
+					<p>Be kind to one another and help make the event welcoming for everyone.</p>
+				</li>
+				<li class="rule-card">
+					<h2>Rule name</h2>
+					<p>The Phantom Ball of Auld Lang Syne is a celebratory gathering of friends and mutuals who enjoy gaming and bringing communities together.</p>
+					<p>Be kind to one another and help make the event welcoming for everyone.</p>
+				</li>
+				<li class="rule-card">
+					<h2>Rule name</h2>
+					<p>The Phantom Ball of Auld Lang Syne is a celebratory gathering of friends and mutuals who enjoy gaming and bringing communities together.</p>
+					<p>Be kind to one another and help make the event welcoming for everyone.</p>
+				</li>
+				<li class="rule-card">
+					<h2>Rule name</h2>
+					<p>The Phantom Ball of Auld Lang Syne is a celebratory gathering of friends and mutuals who enjoy gaming and bringing communities together.</p>
+					<p>Be kind to one another and help make the event welcoming for everyone.</p>
+				</li>
+				<li class="rule-card">
+					<h2>Rule name</h2>
+					<p>The Phantom Ball of Auld Lang Syne is a celebratory gathering of friends and mutuals who enjoy gaming and bringing communities together.</p>
+					<p>Be kind to one another and help make the event welcoming for everyone.</p>
+				</li>
+				<li class="rule-card">
+					<h2>Rule name</h2>
+					<p>The Phantom Ball of Auld Lang Syne is a celebratory gathering of friends and mutuals who enjoy gaming and bringing communities together.</p>
+					<p>Be kind to one another and help make the event welcoming for everyone.</p>
+				</li>
+				<li class="rule-card">
+					<h2>Rule name</h2>
+					<p>The Phantom Ball of Auld Lang Syne is a celebratory gathering of friends and mutuals who enjoy gaming and bringing communities together.</p>
+					<p>Be kind to one another and help make the event welcoming for everyone.</p>
+				</li>
+				<li class="rule-card">
+					<h2>Rule name</h2>
+					<p>The Phantom Ball of Auld Lang Syne is a celebratory gathering of friends and mutuals who enjoy gaming and bringing communities together.</p>
+					<p>Be kind to one another and help make the event welcoming for everyone.</p>
+				</li>
+			</ul>
+		</section>
+		<section class="committee-section">
+			<div class="heading">
+				<h2>COMMITTEE</h2>
+				<img src="/d/hr.png" alt="">
+				<p>The Phantom Ball of Auld Lang Syne is a celebratory gathering of friends and mutuals who enjoy gaming and bringing communities together.</p>
+			</div>
+			<ul class="profile-list">
+				<li class="profile-card">
+					<div class="profile-portrait">
+						<img src="https://picsum.photos/seed/phantom-committee-1/600/520" alt="" loading="lazy">
+					</div>
+					<div class="profile-details">
+						<h3>Person Name</h3>
+						<p>Title role here</p>
+					</div>
+					<img class="profile-ornament" src="/d/hr.png" alt="">
+				</li>
+				<li class="profile-card">
+					<div class="profile-portrait">
+						<img src="https://picsum.photos/seed/phantom-committee-2/600/520" alt="" loading="lazy">
+					</div>
+					<div class="profile-details">
+						<h3>Person Name</h3>
+						<p>Title role here</p>
+					</div>
+					<img class="profile-ornament" src="/d/hr.png" alt="">
+				</li>
+				<li class="profile-card">
+					<div class="profile-portrait">
+						<img src="https://picsum.photos/seed/phantom-committee-3/600/520" alt="" loading="lazy">
+					</div>
+					<div class="profile-details">
+						<h3>Person Name</h3>
+						<p>Title role here</p>
+					</div>
+					<img class="profile-ornament" src="/d/hr.png" alt="">
+				</li>
+				<li class="profile-card">
+					<div class="profile-portrait">
+						<img src="https://picsum.photos/seed/phantom-committee-4/600/520" alt="" loading="lazy">
+					</div>
+					<div class="profile-details">
+						<h3>Person Name</h3>
+						<p>Title role here</p>
+					</div>
+					<img class="profile-ornament" src="/d/hr.png" alt="">
+				</li>
+			</ul>
+		</section>
+	</main>
+</HeaderLayout>
+
+<style lang="scss">
+	@mixin section-heading {
+		padding: 2rem 1.5rem;
+		text-align: center;
+		background: #030a11;
+		filter: initial;
+		h1,
+		h2 {
+			margin: 0 0 0.35rem;
+			color: #fff;
+			font-family: "Cinzel", serif;
+			font-size: clamp(2rem, 3.5vw, 2.7rem);
+			font-weight: 700;
+		}
+
+		img {
+			display: block;
+			width: min(320px, 70%);
+			height: auto;
+			margin: 0 auto 1rem;
+		}
+
+		p {
+			max-width: 60ch;
+			margin: 0 auto;
+			color: #fff;
+			font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+			line-height: 1.5;
+		}
+	}
+
+	#p_rules {
+		min-height: 100vh;
+		background: #06101b;
+
+		.rules-banner {
+			height: clamp(180px, 30vw, 320px);
+			background:
+				linear-gradient(rgba(3, 12, 21, 0.45), rgba(3, 12, 21, 0.65)),
+				url('/b/ballroom.webp') center 48% / cover no-repeat;
+			border-bottom: 10px solid #081420;
+		}
+
+		.rules-content {
+			padding: 1.5rem 0 3rem;
+
+			.heading {
+				@include section-heading;
+				margin: 1em 0;
+			}
+
+			.rule-list {
+				display: grid;
+				grid-template-columns: repeat(3, minmax(0, 1fr));
+				gap: 1rem;
+				width: min(90%, 900px);
+				margin: 0 auto;
+				padding: 0;
+				list-style: none;
+
+				.rule-card {
+					padding: 1.5rem;
+					border-bottom: 2px solid #bc965c;
+					background: #020a12;
+					h2 {
+						margin: 0 0 0.5rem;
+						color: #bc965c;
+						font-family: "Manrope", sans-serif;
+						font-size: 0.95rem;
+						font-weight: 700;
+					}
+
+					p {
+						margin: 0 0 0.65rem;
+						color: #d3d5d8;
+						font-size: 0.75rem;
+						line-height: 1.45;
+
+						&:last-child {
+							margin-bottom: 0;
+						}
+					}
+				}
+			}
+		}
+
+		.committee-section {
+			padding: 0 0 4rem;
+
+			.heading {
+				@include section-heading;
+				margin-bottom: 2.5rem;
+			}
+
+			.profile-list {
+				display: grid;
+				grid-template-columns: repeat(4, minmax(0, 1fr));
+				gap: clamp(1rem, 3vw, 2.5rem);
+				width: min(95%, 1280px);
+				margin: 0 auto;
+				padding: 0;
+				list-style: none;
+
+				.profile-card {
+					position: relative;
+					overflow: visible;
+					border: 2px solid #bc965c;
+					border-radius: 12px;
+					background: #020a12;
+					box-shadow: 0 0 22px rgba(188, 150, 92, 0.25);
+					text-align: center;
+					transition: all 500ms ease;
+					&:hover{
+						scale: 1.05;
+						cursor: pointer;
+					}
+					.profile-portrait {
+						aspect-ratio: 1 / 0.86;
+						overflow: hidden;
+						border-radius: 9px 9px 0 0;
+
+						img {
+							display: block;
+							width: 100%;
+							height: 100%;
+							object-fit: cover;
+							object-position: center;
+						}
+					}
+
+					.profile-details {
+						min-height: 7rem;
+						padding: 1.25rem 0.75rem;
+
+						h3 {
+							margin: 0;
+							color: #bc965c;
+							font-family: "Cinzel", serif;
+							font-size: clamp(1rem, 1.7vw, 1.5rem);
+							font-variant: small-caps;
+							line-height: 1.2;
+						}
+
+						p {
+							margin: 0.25rem 0 0;
+							color: #9a9a9a;
+							font-family: "Cinzel", serif;
+							font-size: 0.85rem;
+							text-transform: uppercase;
+						}
+					}
+
+					.profile-ornament {
+						position: absolute;
+						bottom: 0;
+						left: 50%;
+						height: auto;
+						transform: translate(-50%, 50%);
+					}
+				}
+			}
+		}
+
+		@media (max-width: 700px) {
+			.rules-content {
+				.rule-list {
+					grid-template-columns: repeat(2, minmax(0, 1fr));
+				}
+			}
+
+			.committee-section {
+				.profile-list {
+					grid-template-columns: repeat(2, minmax(0, 1fr));
+					width: min(90%, 700px);
+					row-gap: 2.5rem;
+				}
+			}
+		}
+
+		@media (max-width: 480px) {
+			.rules-content {
+				.rule-list {
+					grid-template-columns: minmax(0, 1fr);
+				}
+			}
+
+			.committee-section {
+				.profile-list {
+					grid-template-columns: minmax(0, 1fr);
+					width: min(90%, 360px);
+				}
+			}
+		}
+	}
+</style>

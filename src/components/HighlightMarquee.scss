@@ -1,0 +1,47 @@
+.highlight-video-list {
+  .highlight-marquee {
+    width: 100%;
+  }
+
+  .highlight-fallback {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    padding: 0 2.2vw;
+
+    &[hidden] {
+      display: none;
+    }
+  }
+
+  .highlight-card {
+    display: block;
+    min-width: 0;
+    height: clamp(145px, 14vw, 300px);
+    padding: 0;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border: 3px solid #d5a937;
+    background: #07090c;
+
+    iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+  }
+
+  .rfm-child .highlight-card {
+    flex: 0 0 clamp(230px, 24vw, 340px);
+    margin: 0 6px;
+  }
+}
+
+@media (max-width: 700px) {
+  .highlight-video-list {
+    .highlight-fallback {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}

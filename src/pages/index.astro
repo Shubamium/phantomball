@@ -1,0 +1,465 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import HighlightMarquee from '../components/HighlightMarquee';
+
+export const prerender = true;
+
+const posts = await getCollection('posts');
+---
+
+<Layout title="Keystatic & Astro's Content Collections">
+  <section id="hero">
+		<img src="/d/hero_side.png" alt="" class="hero_side l">
+		<img src="/d/hero_side.png" alt="" class="hero_side r">
+		<div class="title">
+			<img src="/p/title.png" alt="" class="title_text">
+		</div>
+
+
+		<!-- If browser support VP9 -->
+		<div class="vid-container" id="with-parallax" hidden>
+			<video src="/vc/bg.webm" data-depth="-120" class="vid bg" autoplay muted loop></video>
+			<video src="/vc/main5.webm" data-depth="-40" class="vid main" autoplay muted loop></video>
+			<div data-depth="20" data-max="40" class="fg"></div>
+		</div>
+		<!-- If browser doesn't support -->
+		 <div class="vid-container" id="no-parallax">
+			<video src="/vc/fallback.webm" poster="/g/placeholder.png" class="fallback-video"></video>
+		 </div>
+		<!-- <img src="/d/spotlight.png" alt="" class="spt l">
+		<img src="/d/spotlight.png" alt="" class="spt r">
+		<img src="/d/building.png" alt="" class="bld f l">
+		<img src="/d/building.png" alt="" class="bld f r">
+		<img src="/d/building.png" alt="" class="bld b l">
+
+		<img src="/d/building.png" alt="" class="bld b r">
+		<img src="/d/temp_bld.png" alt="" class="main-building"> -->
+	</section>
+	<section id="welcome">
+		<img src="/g/main-logo.png" alt="Main Logo	" class="outside_main-logo">
+		<div class="heading">
+			<h2>Welcome to the Phantom Ball</h2>
+			<img src="/d/hr.png" alt="">
+			<p>The Phantom Ball of Auld Lang Syne is a celebratory gathering of friends and mutuals who enjoy gaming and bringing communities together.</p>
+			<p>
+The Phantom Ball is a night for remembering - it is a night to remember 
+<br/><strong>The Spirit of Gaming.</strong></p>
+		</div>
+	</section>
+
+	<section id="current-year">
+			<div class="panel">
+				<div class="box tl"></div>
+				<div class="box tr"></div>
+				<div class="box bl"></div>
+				<div class="box br"></div>
+				<div class="art-container">
+					<img src="/g/current_year.png" alt="" class="year-img">
+				</div>
+				<div class="text">
+					<div class="top">
+						<h2 class="subtitle">PHANTOM BALL 2025</h2>
+						<h2 class="maintitle">"TITLE OF PHANTOM BALL"</h2>
+						<img src="/d/list_small.png" alt="">
+
+						<p class="desc">(Placeholder) description The Phantom Ball of Auld Lang Syne is a celebratory gathering of friends and mutuals who enjoy gaming and bringing communities together.
+The Phantom Ball is a night for remembering </p>
+					</div>
+				</div>
+			</div>
+	</section> 
+	<section id="highlight">
+		<div class="highlight-heading">
+			<span aria-hidden="true"></span>
+			<h2>Highlights</h2>
+			<span aria-hidden="true"></span>
+		</div>
+		<HighlightMarquee client:load />
+		<a class="highlight-previous-link" href="/highlights">View Previous Phantom Ball</a>
+	</section>
+</Layout>
+
+<script>
+	const parallaxContainer = document.querySelector<HTMLElement>('#with-parallax');
+	const fallbackContainer = document.querySelector<HTMLElement>('#no-parallax');
+	const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
+		|| (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+	const supportsVP9 = document.createElement('video')
+		.canPlayType('video/webm; codecs="vp9"') !== '';
+
+	if (parallaxContainer && fallbackContainer) {
+		const useParallax = supportsVP9 && !isIOS;
+		parallaxContainer.hidden = !useParallax;
+		fallbackContainer.hidden = useParallax;
+	}
+
+	const layers = [...document.querySelectorAll<HTMLElement>('#hero [data-depth]')];
+	const intensity = 0.45;
+
+	// Options
+	const animationSpeed = 0.20;
+	let easedScroll = window.scrollY;
+	let animationFrame = 0;
+
+	function updateParallax() {
+		easedScroll += (window.scrollY - easedScroll) * animationSpeed;
+
+		layers.forEach((layer) => {
+			const depth = Number(layer.dataset.depth);
+			const offset = -easedScroll * depth * intensity / 100;
+			const max = Number(layer.dataset.max);
+			const clampedOffset = layer.dataset.max === undefined || !Number.isFinite(max)
+				? offset
+				: Math.max(-max, Math.min(max, offset));
+			layer.style.transform = `translateY(${clampedOffset}px)`;
+		});
+
+		if (Math.abs(window.scrollY - easedScroll) > 0.1) {
+			animationFrame = requestAnimationFrame(updateParallax);
+		} else {
+			animationFrame = 0;
+		}
+	}
+
+	window.addEventListener('scroll', () => {
+		if (!animationFrame) {
+			animationFrame = requestAnimationFrame(updateParallax);
+		}
+	}, { passive: true });
+</script>
+
+<style lang="scss">
+	#hero {
+
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		min-height: min(100vh,1080px);
+		text-align: center;
+		background: url('/b/fireworksbg.png'), linear-gradient(to bottom, #050F1C, #10162A 60%,#755B34 );
+		border-bottom: 10px solid #BC965C;
+		padding-top: 5em;
+		position: relative;
+		width: 100%;	
+		overflow: hidden;
+		
+		.hero_side{
+			position: absolute;
+			top: 50px;
+			left: 50px;
+			object-fit: cover;
+			width: 200px;
+
+			&.r{
+				left: auto;
+				right: 50px;
+				transform: scaleX(-1);
+			}
+		}
+		z-index: 1;
+		.title{
+			.title_text{
+				width: 100%;
+				max-width: 700px;
+				height: auto;
+			}
+		}
+
+		.vid-container{
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: -1;
+			background: url('/g/placeholder.png');
+			video{
+				width: 100%;
+				height: 100%;
+				user-select: none;
+				position: absolute;
+				top: 0%;
+				left: 0%;
+				object-fit: cover;
+			}
+			.bg{
+				position: absolute;
+				z-index: -10;
+				mask-image: linear-gradient(to top, white, white 94%, transparent 100%);
+
+			}
+
+			.fg{
+				position: absolute;
+				z-index: 100;
+				width: 100%;
+				height: 100%;
+				top: 5%;
+				left: 0%;
+				background: url('/g/foreground.png');
+				background-size: 100% auto;
+				background-repeat: repeat-x;
+				background-position: bottom;
+				// opacity: 0.9;
+				// filter: blur(2px);
+				// mask-image: linear-gradient(to bottom, white, white 98%, transparent 100%);
+			}
+		}
+
+		// Deprecated
+		.main-building{
+			position: absolute;
+			bottom: -150px;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+
+		.spt{
+			position: absolute;
+			mix-blend-mode: screen;
+			&.l{
+				left: 0%;
+				transform-origin: bottom left;
+			}
+			animation: spotlight 4s ease-in-out  infinite alternate ;
+			@keyframes spotlight {
+				from{
+					rotate: -10deg;
+				}
+				to{
+					rotate: 10deg;
+				}
+			}
+			&.r{
+				right: 0%;
+				transform-origin: bottom center;
+				transform: scaleX(-1);
+				animation-direction: alternate-reverse;
+			}
+		}
+		.bld {
+			position: absolute;
+			width: 1300px;
+			height: auto;
+
+			&.l{
+				left: -20%;
+				bottom: 0;
+			}
+
+			&.b{
+				z-index: -1;
+				width: 1600px;
+				opacity: 0.6;
+				filter: blur(3px);
+			}
+			&.r{
+				right: -20%;
+				bottom: 0;
+			}
+		}
+	}
+
+	#welcome{
+		position: relative;
+		z-index: 10;
+		&::before{
+			content:'';
+			z-index: -10;
+			position:absolute;
+			top:0%;
+			left:0%;
+			width:100%;
+			height:100%;
+			background: url('/b/ballroom.webp');
+			opacity: 0.2;
+			mask-image: linear-gradient(to bottom, white, transparent);
+		}
+		min-height: 800px;
+		.heading{
+			padding-top: 300px;
+			
+			
+		}
+	}
+	.outside_main-logo{
+		position: absolute;
+		top: -150px;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 800px;
+
+		height: auto;
+	}
+	#highlight{
+		min-height: 300px;
+		background: #081420;
+		padding: 1.5rem 0 2rem;
+		overflow: hidden;
+		text-align: center;
+
+		.highlight-heading{
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: clamp(1.5rem, 5vw, 4rem);
+			margin: 0 auto 1rem;
+			padding: 0 2rem;
+			max-width: 1440px;
+
+			span{
+				position: relative;
+				flex: 1;
+				height: 2px;
+				background: #BC965C;
+
+				&:first-child::after,
+				&:last-child::before{
+					content: '';
+					position: absolute;
+					top: 50%;
+					width: 15px;
+					height: 15px;
+					background: #BC965C;
+					transform: translateY(-50%) rotate(45deg);
+				}
+				&:first-child::after{
+					right: -2px;
+				}
+				&:last-child::before{
+					left: -2px;
+				}
+			}
+
+			h2{
+				margin: 0;
+				color: #FFFFFF;
+				font-size: clamp(1.8rem, 3.2vw, 2.7rem);
+				font-weight: 400;
+				font-variant: small-caps;
+				white-space: nowrap;
+			}
+		}
+
+		.highlight-previous-link{
+			display: inline-block;
+			min-width: min(290px, calc(100% - 3rem));
+			margin-top: 2rem;
+			padding: 0.75rem 1.5rem;
+			border-radius: 6px;
+			background: #BC965C;
+			color: #17120B;
+			font-family: "Cinzel", serif;
+			font-size: 1rem;
+			font-weight: 700;
+			text-decoration: none;
+			transition: background-color 180ms ease, transform 180ms ease;
+
+			&:hover{
+				background: #D5B276;
+				transform: translateY(-2px);
+			}
+			&:focus-visible{
+				outline: 2px solid #FFFFFF;
+				outline-offset: 3px;
+			}
+		}
+
+		.highlight-note{
+			margin: 0.45rem max(1.5rem, calc((100% - 1440px) / 2)) 0;
+			color: #D0D0D0;
+			font-size: 0.7rem;
+			line-height: 1.35;
+			text-align: right;
+		}
+
+	}
+	#current-year{
+		// min-height:2000px;
+		background: #081420;
+		padding: 5% 0;
+		--corner-box-size: 60px;
+		.panel{
+			position: relative;
+			box-shadow: 0px 0px 20px 5px rgba(188, 150, 92, 0.5);
+			rotate: -2deg;
+			max-width: 1200px;
+			margin: 0 auto;
+			background: #020A12;
+			border: 10px solid #BC965C;
+			outline: 3px solid #BC965C;
+			outline-offset: -25px;
+			// display: flex;
+			// justify-content: center;
+			padding: 3em;
+			width: 100%;
+			.box{
+				position: absolute;
+				z-index: 1;
+				width: var(--corner-box-size);
+				height: var(--corner-box-size);
+				background: #BC965C;
+
+				&.tl{
+					top: 0;
+					left: 0;
+					transform: translate(-50%, -50%);
+				}
+				&.tr{
+					top: 0;
+					right: 0;
+					transform: translate(50%, -50%);
+				}
+				&.bl{
+					bottom: 0;
+					left: 0;
+					transform: translate(-50%, 50%);
+				}
+				&.br{
+					bottom: 0;
+					right: 0;
+					transform: translate(50%, 50%);
+				}
+			}
+			.year-img{
+				max-width: 95%;
+				margin: 0 auto;
+				object-fit: contain;
+			}
+			.art-container{
+				display: flex;
+				justify-content: center;
+			}
+
+
+			.text{
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				text-align: center;
+				margin: 1em 0;
+				.subtitle{
+					font-size: 1em;
+					font-weight: bold;
+					color: #BC965C;
+				}
+				.maintitle{
+					font-size: 2.5em;
+					line-height: 0.4em;
+					font-weight: bold;
+					color: #FFFFFF;
+				}
+				.desc{
+					font-size: 1.2em;
+					color: #FFFFFF;
+					margin:1.5em;
+					font-size: 1.1rem;
+					max-width: 700px;
+					margin: 1.5em auto;
+				}
+			}
+		}
+	}
+	
+</style>
