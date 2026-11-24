@@ -24,24 +24,33 @@ function resolveMarquee(value: unknown): typeof Marquee {
 
 const MarqueeComponent = resolveMarquee(Marquee);
 
-const videos = [
-  { title: "Phantom Ball highlight 1", id: "7gUudkXcBek" },
-  { title: "Phantom Ball highlight 2", id: "7gUudkXcBek" },
-  { title: "Phantom Ball highlight 3", id: "7gUudkXcBek" },
-  { title: "Phantom Ball highlight 4", id: "7gUudkXcBek" },
-];
+type Memory = {
+  _key: string;
+  title: string;
+  youtubeId: string;
+};
 
-export default function HighlightMarquee() {
+export default function HighlightMarquee({ memories }: { memories: Memory[] }) {
   const [marqueeReady, setMarqueeReady] = useState(false);
+
+  if (memories.length === 0) {
+    return (
+      <div className="highlight-video-list">
+        <p className="highlight-empty">
+          No highlight videos have been added for the featured year yet.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="highlight-video-list">
       <div className="highlight-fallback" hidden={marqueeReady}>
-        {videos.map((video) => (
-          <div className="highlight-card" key={video.id}>
+        {memories.map((memory) => (
+          <div className="highlight-card" key={memory._key}>
             <iframe
-              src={`https://www.youtube-nocookie.com/embed/${video.id}?rel=0`}
-              title={video.title}
+              src={`https://www.youtube-nocookie.com/embed/${memory.youtubeId}?rel=0`}
+              title={memory.title}
               loading="lazy"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               referrerPolicy="strict-origin-when-cross-origin"
@@ -58,11 +67,11 @@ export default function HighlightMarquee() {
         gradient={false}
         onMount={() => setMarqueeReady(true)}
       >
-        {videos.map((video) => (
-          <div className="highlight-card" key={video.id}>
+        {memories.map((memory) => (
+          <div className="highlight-card" key={memory._key}>
             <iframe
-              src={`https://www.youtube-nocookie.com/embed/${video.id}?rel=0`}
-              title={video.title}
+              src={`https://www.youtube-nocookie.com/embed/${memory.youtubeId}?rel=0`}
+              title={memory.title}
               loading="lazy"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               referrerPolicy="strict-origin-when-cross-origin"

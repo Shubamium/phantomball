@@ -106,6 +106,10 @@
         background: #02080e;
         object-fit: cover;
       }
+
+      .image-placeholder {
+        background: radial-gradient(ellipse at center, #172331 0%, #02080e 70%);
+      }
     }
 
     .highlight-sidebar {
@@ -174,6 +178,8 @@
           #000 76%,
           transparent 100%
         );
+        padding-bottom: 100px;
+        padding-right: 10px;
         scrollbar-color: #bc965c #06101b;
         scrollbar-width: thin;
         .comment-card {
@@ -212,7 +218,6 @@
 
           .comment-content {
             min-width: 0;
-
             h3 {
               margin: 0 0 0.25rem;
               color: #bc965c;
@@ -235,6 +240,12 @@
         }
       }
     }
+  }
+
+  .highlights-empty {
+    margin: 2rem auto;
+    color: #c4c5c8;
+    text-align: center;
   }
 
   .memories-section {
@@ -271,6 +282,12 @@
       }
     }
 
+    .memories-empty {
+      margin: 0;
+      color: #c4c5c8;
+      font-size: 0.8rem;
+    }
+
     .memories-marquee {
       width: 100%;
 
@@ -303,8 +320,36 @@
     .year-showcase {
       grid-template-columns: minmax(0, 1fr);
 
+      .showcase-main {
+        .showcase-toolbar {
+          align-items: center;
+          flex-wrap: wrap;
+
+          .year-switcher {
+            gap: 0.65rem 1rem;
+            padding-left: 1.25rem;
+          }
+
+          .event-label {
+            max-width: 18ch;
+          }
+        }
+
+        .main-image {
+          aspect-ratio: 16 / 10;
+        }
+      }
+
       .highlight-sidebar {
         padding-top: 0;
+
+        .event-details {
+          padding: 1rem 0.5rem;
+
+          p {
+            max-width: 50ch;
+          }
+        }
 
         .comment-list {
           max-height: 280px;
@@ -314,10 +359,18 @@
 
     .memories-section {
       grid-template-columns: minmax(0, 1fr);
+      gap: 0.75rem;
 
       .memories-intro {
+        text-align: center;
+
+        img {
+          margin-inline: auto;
+        }
+
         p {
           max-width: 60ch;
+          margin-inline: auto;
         }
       }
     }
@@ -326,14 +379,88 @@
 
 @media (max-width: 480px) {
   .highlights-page {
+    width: calc(100% - 1.5rem);
+    padding-top: 1rem;
+
     .year-showcase {
+      gap: 1rem;
+
       .showcase-main {
         .showcase-toolbar {
+          flex-direction: column;
           align-items: center;
-          flex-wrap: wrap;
+          gap: 0.75rem;
+
+          .year-switcher {
+            justify-content: center;
+            width: 100%;
+            gap: 0.5rem;
+            padding-left: 0;
+
+            .year-button {
+              display: grid;
+              place-items: center;
+              padding: 0;
+              border: 1px solid #bc965c;
+              color: #bc965c;
+              font-size: 1rem;
+              padding: 0.1em 1em;
+              &::before,
+              &::after {
+                display: none;
+              }
+
+              &:hover,
+              &[aria-pressed="true"] {
+                background: #bc965c;
+                color: #02080e;
+              }
+            }
+
+            &::before {
+              display: none;
+            }
+          }
 
           .event-label {
-            margin-left: auto;
+            align-items: center;
+            max-width: none;
+            margin: 0;
+            font-size: 1.4rem;
+            text-align: center;
+            background: none;
+          }
+        }
+
+        .main-image {
+          aspect-ratio: 4 / 3;
+        }
+      }
+
+      .highlight-sidebar {
+        .event-details {
+          .event-avatar {
+            width: 60px;
+            height: 60px;
+          }
+
+          h2 {
+            font-size: 1.15rem;
+          }
+
+          p {
+            font-size: 0.8rem;
+          }
+        }
+
+        .comment-list {
+          max-height: 320px;
+          padding-right: 0;
+
+          .comment-card {
+            grid-template-columns: 54px minmax(0, 1fr);
+            gap: 0.6rem;
+            padding-right: 1.25rem;
           }
         }
       }
@@ -341,6 +468,16 @@
 
     .memories-section {
       padding: 1rem 0.75rem;
+
+      .memories-marquee {
+        .rfm-child {
+          flex-basis: 180px;
+        }
+
+        .memory-card {
+          height: 110px;
+        }
+      }
     }
   }
 }

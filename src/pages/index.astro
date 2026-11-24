@@ -1,10 +1,24 @@
 ---
-import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import HighlightMarquee from '../components/HighlightMarquee';
+import { sanityClient } from 'sanity:client';
+import { defineQuery } from 'groq';
 
 export const prerender = true;
 
+const HOME_PAGE_QUERY = defineQuery(`*[_id == "homePage"][0]{
+	"featuredYear": featuredYear->{
+		_id,
+		year,
+		eventTitle,
+		title,
+		description,
+		memories[]{_key, title, youtubeId}
+	}
+}`);
+
+const homePage = await sanityClient.fetch(HOME_PAGE_QUERY);
+const featuredYear = homePage?.featuredYear;
 ---
 
 <Layout title="Keystatic & Astro's Content Collections">
@@ -61,12 +75,11 @@ The Phantom Ball is a night for remembering - it is a night to remember
 				</div>
 				<div class="text">
 					<div class="top">
-						<h2 class="subtitle">PHANTOM BALL 2025</h2>
-						<h2 class="maintitle">"TITLE OF PHANTOM BALL"</h2>
+						<h2 class="subtitle">{featuredYear?.eventTitle ?? 'PHANTOM BALL'}</h2>
+						<h2 class="maintitle">{featuredYear?.title ?? 'Event details coming soon'}</h2>
 						<img src="/d/list_small.png" alt="">
 
-						<p class="desc">(Placeholder) description The Phantom Ball of Auld Lang Syne is a celebratory gathering of friends and mutuals who enjoy gaming and bringing communities together.
-The Phantom Ball is a night for remembering </p>
+						<p class="desc">{featuredYear?.description ?? 'Event details will be announced soon.'}</p>
 					</div>
 				</div>
 			</div>
@@ -77,7 +90,7 @@ The Phantom Ball is a night for remembering </p>
 			<h2>Highlights</h2>
 			<span aria-hidden="true"></span>
 		</div>
-		<HighlightMarquee client:load />
+		<HighlightMarquee memories={featuredYear?.memories ?? []} client:load />
 		<a class="highlight-previous-link" href="/highlights">View Previous Phantom Ball</a>
 	</section>
 </Layout>
@@ -205,6 +218,10 @@ The Phantom Ball is a night for remembering </p>
 				background-position: bottom;
 				// opacity: 0.9;
 				// filter: blur(2px);
+
+				@media screen and (max-width: 500px) {
+					width: 500%;
+				}
 				// mask-image: linear-gradient(to bottom, white, white 98%, transparent 100%);
 			}
 		}
@@ -266,6 +283,7 @@ The Phantom Ball is a night for remembering </p>
 	#welcome{
 		position: relative;
 		z-index: 10;
+		min-height: 800px;
 		&::before{
 			content:'';
 			z-index: -10;
@@ -278,11 +296,16 @@ The Phantom Ball is a night for remembering </p>
 			opacity: 0.2;
 			mask-image: linear-gradient(to bottom, white, transparent);
 		}
-		min-height: 800px;
 		.heading{
 			padding-top: 200px;
-			
-			
+			h2{
+				font-size: clamp(2.25rem, 5vw, 4rem);
+				line-height: 1.1;
+			}
+			p{
+				width: calc(100% - 3rem);
+				font-size: clamp(1.05rem, 2vw, 1.5rem);
+			}
 		}
 	}
 	.outside_main-logo{
@@ -290,9 +313,55 @@ The Phantom Ball is a night for remembering </p>
 		top: 50px;
 		left: 50%;
 		transform: translateX(-50%);
-		width: 700px;
-
+		width: clamp(320px, 65vw, 700px);
 		height: auto;
+	}
+
+	/* Responsive welcome section */
+	@media (max-width: 900px){
+		#welcome{
+			min-height: 650px;
+			.heading{
+				padding: 170px 1.5rem 3rem;
+				h2{
+					font-size: clamp(2rem, 7vw, 3.25rem);
+				}
+				p{
+					width: 100%;
+					font-size: clamp(1rem, 3vw, 1.25rem);
+				}
+			}
+		}
+		.outside_main-logo{
+			top: 40px;
+			width: clamp(280px, 60vw, 520px);
+		}
+	}
+
+	@media (max-width: 600px){
+		#welcome{
+			min-height: 560px;
+			.heading{
+				padding: 130px 1.25rem 2.5rem;
+				h2{
+					margin: 0.75rem 0;
+					font-size: clamp(1.8rem, 9vw, 2.5rem);
+				}
+				img{
+					width: 90%;
+					max-width: 320px;
+				}
+				p{
+					margin-bottom: 1.25rem;
+					font-size: clamp(0.95rem, 4.5vw, 1.1rem);
+					line-height: 1.55;
+				}
+			}
+		}
+		.outside_main-logo{
+			top: 30px;
+			width: min(420px, 78vw);
+		}
 	}
 	#highlight{
 		min-height: 300px;
@@ -343,7 +412,9 @@ The Phantom Ball is a night for remembering </p>
 				white-space: nowrap;
 			}
 		}
-
+		.highlight-video-list{
+			max-width: 1440px;
+		}
 		.highlight-previous-link{
 			display: inline-block;
 			min-width: min(290px, calc(100% - 3rem));
@@ -381,7 +452,7 @@ The Phantom Ball is a night for remembering </p>
 		// min-height:2000px;
 		background: #081420;
 		padding: 5% 0;
-		--corner-box-size: 60px;
+		--corner-box-size: clamp(36px, 5vw, 60px);
 		.panel{
 			position: relative;
 			box-shadow: 0px 0px 20px 5px rgba(188, 150, 92, 0.5);
@@ -442,23 +513,63 @@ The Phantom Ball is a night for remembering </p>
 				text-align: center;
 				margin: 1em 0;
 				.subtitle{
-					font-size: 1em;
+					font-size: clamp(0.85rem, 1.5vw, 1em);
 					font-weight: bold;
 					color: #BC965C;
 				}
 				.maintitle{
-					font-size: 2.5em;
-					line-height: 0.4em;
+					font-size: clamp(1.8rem, 4vw, 2.5em);
+					line-height: 1.1;
 					font-weight: bold;
 					color: #FFFFFF;
 				}
 				.desc{
-					font-size: 1.2em;
 					color: #FFFFFF;
-					margin:1.5em;
-					font-size: 1.1rem;
+					font-size: clamp(1rem, 1.8vw, 1.1rem);
 					max-width: 700px;
 					margin: 1.5em auto;
+				}
+			}
+		}
+	}
+
+	/* Responsive current-year panel */
+	@media (max-width: 900px){
+		#current-year{
+			--corner-box-size: 42px;
+			padding: 4rem 0;
+
+			.panel{
+				rotate: 0deg;
+				width: calc(100% - 3rem);
+				padding: 2.5em 1.5em;
+			}
+		}
+	}
+
+	@media (max-width: 600px){
+		#current-year{
+			--corner-box-size: 28px;
+			padding: 3rem 0;
+
+			.panel{
+				width: calc(100% - 2.5rem);
+				border-width: 7px;
+				outline-offset: -16px;
+				padding: 2rem 1rem 1.5rem;
+
+				.year-img{
+					max-width: 100%;
+				}
+				.text{
+					margin: 0.75em 0;
+
+					.maintitle{
+						font-size: clamp(1.5rem, 8vw, 2.1rem);
+					}
+					.desc{
+						margin: 1.25em auto;
+					}
 				}
 			}
 		}

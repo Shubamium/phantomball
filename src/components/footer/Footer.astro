@@ -153,5 +153,74 @@ import { Icon } from 'astro-icon/components'
 			gap: 2em;
 			grid-template-columns: 1.2fr 1.8fr 1fr;
 		}
+
+		/* Responsive layout */
+		@media (max-width: 900px){
+			.container{
+				width: calc(100% - 3rem);
+				grid-template-columns: 0.8fr 1.7fr;
+			}
+			.end{
+				grid-column: 1 / -1;
+				align-items: flex-end;
+			}
+			.logo .main-logo{
+				margin-top: 0;
+			}
+		}
+
+		@media (max-width: 600px){
+			padding: 2em 0 2.5em;
+
+			.container{
+				width: calc(100% - 2rem);
+				grid-template-columns: 1fr;
+				gap: 1.5em;
+			}
+			.logo{
+				text-align: center;
+				.main-logo{
+					width: min(240px, 70%);
+				}
+			}
+			.navigations{
+				grid-template-columns: 1fr 1fr;
+				padding-bottom: 0.5em;
+			}
+			.nav-head{
+				font-size: 1.5rem;
+			}
+			.end{
+				grid-column: auto;
+				align-items: flex-start;
+				p{
+					text-align: left;
+				}
+			}
+		}
+
+		@media (max-width: 380px){
+			.navigations{
+				grid-template-columns: 1fr;
+				gap: 1em;
+			}
+		}
+	}
+
+	/* Small-screen decorative sizing */
+	@media (max-width: 600px){
+		.decofooter-container{
+			height: 50px;
+		}
+		.decofooter{
+			top: -40px;
+			height: 60px;
+			&.l{
+				left: -150px;
+			}
+			&.r{
+				right: -150px;
+			}
+		}
 	}
 </style>

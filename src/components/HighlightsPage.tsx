@@ -25,66 +25,50 @@ function resolveMarquee(value: unknown): typeof Marquee {
 const MarqueeComponent = resolveMarquee(Marquee);
 
 type Comment = {
+  _key: string;
   name: string;
-  avatar: string;
+  avatarUrl?: string;
   text: string;
 };
 
 type Memory = {
+  _key: string;
   title: string;
   youtubeId: string;
 };
 
 type YearHighlight = {
+  _id: string;
   year: number;
   eventTitle: string;
   title: string;
   description: string;
-  image: string;
+  imageUrl?: string;
+  eventAvatarUrl?: string;
   people: Comment[];
   memories: Memory[];
 };
 
-const description =
-  "The Phantom Ball of Auld Lang Syne is a celebratory gathering of friends and mutuals who enjoy gaming and bringing communities together.";
-function placeholderImage(seed: string, width: number, height: number) {
-  return `https://picsum.photos/seed/${seed}/${width}/${height}`;
-}
-
-function makeMemories(year: number): Memory[] {
-  return Array.from({ length: 5 }, (_, index) => ({
-    title: `Phantom Ball ${year} memory ${index + 1}`,
-    youtubeId: "7gUudkXcBek",
-  }));
-}
-
-const yearHighlights: YearHighlight[] = [
-  { year: 2026, title: '"The Celestial Masquerade"' },
-  { year: 2027, title: '"A Night Among the Stars"' },
-  { year: 2028, title: '"The Enchanted Ballroom"' },
-  { year: 2029, title: '"Midnight in the Grand Hall"' },
-].map(({ year, title }) => ({
-  year,
-  eventTitle: `Phantom Ball ${year}`,
-  title,
-  description,
-  image: placeholderImage(`phantom-ball-main-${year}`, 1400, 900),
-  people: Array.from({ length: 6 }, (_, index) => ({
-    name: `person_name_${index + 1}`,
-    avatar: placeholderImage(`phantom-person-${year}-${index + 1}`, 160, 160),
-    text: description,
-  })),
-  memories: makeMemories(year),
-}));
-
-export default function HighlightsPage() {
-  const [selectedYear, setSelectedYear] = useState(yearHighlights[0].year);
-  const selectedHighlight = yearHighlights.find(
+export default function HighlightsPage({
+  highlights,
+}: {
+  highlights: YearHighlight[];
+}) {
+  const [selectedYear, setSelectedYear] = useState<number | null>(
+    highlights[0]?.year ?? null,
+  );
+  const selectedHighlight = highlights.find(
     (highlight) => highlight.year === selectedYear,
   );
 
   if (!selectedHighlight) {
-    throw new Error(`No Phantom Ball highlights found for ${selectedYear}`);
+    return (
+      <div className="highlights-page">
+        <p className="highlights-empty">
+          No year highlights have been published yet.
+        </p>
+      </div>
+    );
   }
 
   return (
@@ -100,7 +84,7 @@ export default function HighlightsPage() {
               role="group"
               aria-label="Select event year"
             >
-              {yearHighlights.map((highlight) => (
+              {highlights.map((highlight) => (
                 <button
                   className="year-button"
                   type="button"
@@ -117,11 +101,19 @@ export default function HighlightsPage() {
               <span>{selectedHighlight.year}</span>
             </p>
           </div>
-          <img
-            className="main-image"
-            src={selectedHighlight.image}
-            alt={`${selectedHighlight.eventTitle} celebration`}
-          />
+          {selectedHighlight.imageUrl ? (
+            <img
+              className="main-image"
+              src={selectedHighlight.imageUrl}
+              alt={`${selectedHighlight.eventTitle} celebration`}
+            />
+          ) : (
+            <div
+              className="main-image image-placeholder"
+              role="img"
+              aria-label={`${selectedHighlight.eventTitle} image not available`}
+            />
+          )}
         </div>
 
         <aside
@@ -129,15 +121,13 @@ export default function HighlightsPage() {
           aria-label="Event details and comments"
         >
           <div className="event-details">
-            <img
-              className="event-avatar"
-              src={placeholderImage(
-                `phantom-event-avatar-${selectedYear}`,
-                180,
-                180,
-              )}
-              alt=""
-            />
+            {selectedHighlight.eventAvatarUrl && (
+              <img
+                className="event-avatar"
+                src={selectedHighlight.eventAvatarUrl}
+                alt=""
+              />
+            )}
             <h1>{selectedHighlight.eventTitle}</h1>
             <h2>{selectedHighlight.title}</h2>
             <img className="fancy-divider" src="/d/hr_fancy.png" alt="" />
@@ -146,22 +136,21 @@ export default function HighlightsPage() {
 
           <ul className="comment-list" aria-label="Event comments">
             {selectedHighlight.people.map((person) => (
-              <li
-                className="comment-card"
-                key={`${selectedYear}-${person.name}`}
-              >
+              <li className="comment-card" key={person._key}>
                 <img
                   src="/d/comment-side.png"
                   alt=""
                   className="comment-side"
                 />
                 <div className="img-part">
-                  <img
-                    className="comment-avatar"
-                    src={person.avatar}
-                    alt=""
-                    loading="lazy"
-                  />
+                  {person.avatarUrl && (
+                    <img
+                      className="comment-avatar"
+                      src={person.avatarUrl}
+                      alt=""
+                      loading="lazy"
+                    />
+                  )}
                   <img
                     className="comment-ornament"
                     src="/d/hr_fancy.png"
@@ -169,7 +158,7 @@ export default function HighlightsPage() {
                   />
                 </div>
                 <div className="comment-content">
-                  <h3>@{person.name}</h3>
+                  <h3>{person.name}</h3>
                   <p>{person.text}</p>
                 </div>
               </li>
@@ -185,32 +174,36 @@ export default function HighlightsPage() {
         <div className="memories-intro">
           <h2>Memories</h2>
           <img src="/d/hr_fancy.png" alt="" />
-          <p>{selectedHighlight.description}</p>
+          <p> Descriptions here</p>
         </div>
-        <MarqueeComponent
-          key={selectedYear}
-          className="memories-marquee"
-          autoFill
-          pauseOnHover
-          speed={35}
-          gradient={false}
-        >
-          {selectedHighlight.memories.map((memory, index) => (
-            <div
-              className="memory-card"
-              key={`${selectedYear}-${memory.title}-${index}`}
-            >
-              <iframe
-                src={`https://www.youtube-nocookie.com/embed/${memory.youtubeId}?rel=0`}
-                title={memory.title}
-                loading="lazy"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-              />
-            </div>
-          ))}
-        </MarqueeComponent>
+        {selectedHighlight.memories.length > 0 ? (
+          <MarqueeComponent
+            key={selectedYear}
+            className="memories-marquee"
+            autoFill
+            pauseOnHover
+            speed={35}
+            gradient={false}
+          >
+            {selectedHighlight.memories.map((memory) => (
+              <div className="memory-card" key={memory._key}>
+                <iframe
+                  width="560"
+                  height="315"
+                  src={`https://www.youtube.com/embed/${memory.youtubeId}`}
+                  title={memory.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            ))}
+          </MarqueeComponent>
+        ) : (
+          <p className="memories-empty">
+            No memory videos have been added for this year yet.
+          </p>
+        )}
       </section>
     </div>
   );

@@ -1,10 +1,31 @@
 ---
 import HeaderLayout from "../layouts/HeaderLayout.astro";
 import HighlightsPage from "../components/HighlightsPage";
+import { sanityClient } from "sanity:client";
+import { defineQuery } from "groq";
+
+const HIGHLIGHTS_QUERY = defineQuery(`*[_type == "highlightYear" && defined(year)] | order(year desc) {
+	_id,
+	year,
+	eventTitle,
+	title,
+	description,
+	"imageUrl": image.asset->url,
+	"eventAvatarUrl": eventAvatar.asset->url,
+	people[]{_key, name, "avatarUrl": avatar.asset->url, text},
+	memories[]{_key, title, youtubeId}
+}`);
+
+const fetchedHighlights = await sanityClient.fetch(HIGHLIGHTS_QUERY);
+const highlights = fetchedHighlights.map((highlight) => ({
+	...highlight,
+	people: highlight.people ?? [],
+	memories: highlight.memories ?? [],
+}));
 ---
 
 <HeaderLayout title="Year Highlights | Phantom Ball">
 	<main id="p_highlights">
-		<HighlightsPage client:load />
+		<HighlightsPage highlights={highlights} client:load />
 	</main>
 </HeaderLayout>

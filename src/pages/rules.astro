@@ -1,5 +1,18 @@
 ---
 import HeaderLayout from '../layouts/HeaderLayout.astro';
+import { sanityClient } from 'sanity:client';
+import { defineQuery } from 'groq';
+import { createImageUrlBuilder } from '@sanity/image-url';
+
+const RULES_AND_COMMITTEE_QUERY = defineQuery(`*[_id == "rulesAndCommittee"][0]{
+	rules[]{_key, title, description},
+	committee[]{_key, name, role, portrait}
+}`);
+
+const content = await sanityClient.fetch(RULES_AND_COMMITTEE_QUERY);
+const rules = content?.rules ?? [];
+const committee = content?.committee ?? [];
+const imageBuilder = createImageUrlBuilder(sanityClient);
 ---
 
 <HeaderLayout title='Rules | Phantom Ball'>
@@ -12,51 +25,17 @@ import HeaderLayout from '../layouts/HeaderLayout.astro';
 				<p>The Phantom Ball of Auld Lang Syne is a celebratory gathering of friends and mutuals who enjoy gaming and bringing communities together.</p>
 			</div>
 			<ul class="rule-list">
-				<li class="rule-card">
-					<h2>Rule name</h2>
-					<p>The Phantom Ball of Auld Lang Syne is a celebratory gathering of friends and mutuals who enjoy gaming and bringing communities together.</p>
-					<p>Be kind to one another and help make the event welcoming for everyone.</p>
-				</li>
-				<li class="rule-card">
-					<h2>Rule name</h2>
-					<p>The Phantom Ball of Auld Lang Syne is a celebratory gathering of friends and mutuals who enjoy gaming and bringing communities together.</p>
-					<p>Be kind to one another and help make the event welcoming for everyone.</p>
-				</li>
-				<li class="rule-card">
-					<h2>Rule name</h2>
-					<p>The Phantom Ball of Auld Lang Syne is a celebratory gathering of friends and mutuals who enjoy gaming and bringing communities together.</p>
-					<p>Be kind to one another and help make the event welcoming for everyone.</p>
-				</li>
-				<li class="rule-card">
-					<h2>Rule name</h2>
-					<p>The Phantom Ball of Auld Lang Syne is a celebratory gathering of friends and mutuals who enjoy gaming and bringing communities together.</p>
-					<p>Be kind to one another and help make the event welcoming for everyone.</p>
-				</li>
-				<li class="rule-card">
-					<h2>Rule name</h2>
-					<p>The Phantom Ball of Auld Lang Syne is a celebratory gathering of friends and mutuals who enjoy gaming and bringing communities together.</p>
-					<p>Be kind to one another and help make the event welcoming for everyone.</p>
-				</li>
-				<li class="rule-card">
-					<h2>Rule name</h2>
-					<p>The Phantom Ball of Auld Lang Syne is a celebratory gathering of friends and mutuals who enjoy gaming and bringing communities together.</p>
-					<p>Be kind to one another and help make the event welcoming for everyone.</p>
-				</li>
-				<li class="rule-card">
-					<h2>Rule name</h2>
-					<p>The Phantom Ball of Auld Lang Syne is a celebratory gathering of friends and mutuals who enjoy gaming and bringing communities together.</p>
-					<p>Be kind to one another and help make the event welcoming for everyone.</p>
-				</li>
-				<li class="rule-card">
-					<h2>Rule name</h2>
-					<p>The Phantom Ball of Auld Lang Syne is a celebratory gathering of friends and mutuals who enjoy gaming and bringing communities together.</p>
-					<p>Be kind to one another and help make the event welcoming for everyone.</p>
-				</li>
-				<li class="rule-card">
-					<h2>Rule name</h2>
-					<p>The Phantom Ball of Auld Lang Syne is a celebratory gathering of friends and mutuals who enjoy gaming and bringing communities together.</p>
-					<p>Be kind to one another and help make the event welcoming for everyone.</p>
-				</li>
+				{rules.length > 0 ? rules.map((rule) => (
+					<li class="rule-card">
+						<h2>{rule.title}</h2>
+						<p>{rule.description}</p>
+					</li>
+				)) : (
+					<li class="rule-card">
+						<h2>Rules coming soon</h2>
+						<p>Our event rules will be posted here soon.</p>
+					</li>
+				)}
 			</ul>
 		</section>
 		<section class="committee-section">
@@ -66,46 +45,33 @@ import HeaderLayout from '../layouts/HeaderLayout.astro';
 				<p>The Phantom Ball of Auld Lang Syne is a celebratory gathering of friends and mutuals who enjoy gaming and bringing communities together.</p>
 			</div>
 			<ul class="profile-list">
-				<li class="profile-card">
-					<div class="profile-portrait">
-						<img src="https://picsum.photos/seed/phantom-committee-1/600/520" alt="" loading="lazy">
-					</div>
-					<div class="profile-details">
-						<h3>Person Name</h3>
-						<p>Title role here</p>
-					</div>
-					<img class="profile-ornament" src="/d/hr.png" alt="">
-				</li>
-				<li class="profile-card">
-					<div class="profile-portrait">
-						<img src="https://picsum.photos/seed/phantom-committee-2/600/520" alt="" loading="lazy">
-					</div>
-					<div class="profile-details">
-						<h3>Person Name</h3>
-						<p>Title role here</p>
-					</div>
-					<img class="profile-ornament" src="/d/hr.png" alt="">
-				</li>
-				<li class="profile-card">
-					<div class="profile-portrait">
-						<img src="https://picsum.photos/seed/phantom-committee-3/600/520" alt="" loading="lazy">
-					</div>
-					<div class="profile-details">
-						<h3>Person Name</h3>
-						<p>Title role here</p>
-					</div>
-					<img class="profile-ornament" src="/d/hr.png" alt="">
-				</li>
-				<li class="profile-card">
-					<div class="profile-portrait">
-						<img src="https://picsum.photos/seed/phantom-committee-4/600/520" alt="" loading="lazy">
-					</div>
-					<div class="profile-details">
-						<h3>Person Name</h3>
-						<p>Title role here</p>
-					</div>
-					<img class="profile-ornament" src="/d/hr.png" alt="">
-				</li>
+				{committee.length > 0 ? committee.map((member) => (
+					<li class="profile-card">
+						<div class="profile-portrait">
+							{member.portrait?.asset ? (
+								<img
+									src={imageBuilder.image(member.portrait).width(600).height(520).fit('crop').url()}
+									alt={member.portrait.alt || member.name}
+									loading="lazy"
+								>
+							) : (
+								<div class="profile-placeholder" aria-hidden="true"></div>
+							)}
+						</div>
+						<div class="profile-details">
+							<h3>{member.name}</h3>
+							<p>{member.role}</p>
+						</div>
+						<img class="profile-ornament" src="/d/hr.png" alt="">
+					</li>
+				)) : (
+					<li class="profile-card profile-empty">
+						<div class="profile-details">
+							<h3>Committee coming soon</h3>
+							<p>Meet the committee here soon.</p>
+						</div>
+					</li>
+				)}
 			</ul>
 		</section>
 	</main>
@@ -231,8 +197,10 @@ import HeaderLayout from '../layouts/HeaderLayout.astro';
 						aspect-ratio: 1 / 0.86;
 						overflow: hidden;
 						border-radius: 9px 9px 0 0;
+						background: #0b1824;
 
-						img {
+						img,
+						.profile-placeholder {
 							display: block;
 							width: 100%;
 							height: 100%;
@@ -260,6 +228,12 @@ import HeaderLayout from '../layouts/HeaderLayout.astro';
 							font-family: "Cinzel", serif;
 							font-size: 0.85rem;
 							text-transform: uppercase;
+						}
+
+						.profile-empty {
+							grid-column: 1 / -1;
+							width: min(100%, 300px);
+							margin: 0 auto;
 						}
 					}
 
