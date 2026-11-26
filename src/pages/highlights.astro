@@ -4,7 +4,7 @@ import HighlightsPage from "../components/HighlightsPage";
 import { sanityClient } from "sanity:client";
 import { defineQuery } from "groq";
 
-const HIGHLIGHTS_QUERY = defineQuery(`*[_type == "highlightYear" && defined(year)] | order(year desc) {
+const HIGHLIGHTS_QUERY = defineQuery(`*[_type == "highlightYear" && defined(year)] | order(year asc) {
 	_id,
 	year,
 	eventTitle,
