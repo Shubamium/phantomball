@@ -101,7 +101,8 @@
       .main-image {
         display: block;
         width: 100%;
-        aspect-ratio: 1.55 / 1;
+        height: auto;
+        // aspect-ratio: 1.55 / 1;
         border: 3px solid #bc965c;
         background: #02080e;
         object-fit: cover;
@@ -336,7 +337,8 @@
         }
 
         .main-image {
-          aspect-ratio: 16 / 10;
+          width: 100%;
+          height: auto;
         }
       }
 
