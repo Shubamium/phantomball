@@ -13,6 +13,7 @@ const HOME_PAGE_QUERY = defineQuery(`*[_id == "homePage"][0]{
 		eventTitle,
 		title,
 		description,
+		"imageUrl": image.asset->url,
 		memories[]{_key, title, youtubeId}
 	}
 }`);
@@ -71,7 +72,11 @@ The Phantom Ball is a night for remembering - it is a night to remember
 				<div class="box bl"></div>
 				<div class="box br"></div>
 				<div class="art-container">
-					<img src="/g/current_year.png" alt="" class="year-img">
+					<img
+						src={featuredYear?.imageUrl ?? "/g/current_year.png"}
+						alt={`${featuredYear?.eventTitle ?? "Phantom Ball"} featured year banner`}
+						class="year-img"
+					>
 				</div>
 				<div class="text">
 					<div class="top">
